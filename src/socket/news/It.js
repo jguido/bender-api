@@ -1,12 +1,16 @@
 const { Wit, log } = require('node-wit');
 
+
+
 class It {
+
     /**
      *
      * @param {Server} io
      * @param {string} accessToken
+     * @param {ServiceRegistry} serviceRegistry
      */
-    static run(io, accessToken) {
+    static run(io, accessToken, serviceRegistry) {
         const client = new Wit({
             accessToken: accessToken,
             logger: new log.Logger(log.DEBUG)
@@ -21,10 +25,15 @@ class It {
             });
 
             user.on('chat message', function(message) {
-                client
-                    .message(message, {})
-                    .then(data => user.emit('anwser message', JSON.stringify(data)))
-                    .catch(console.error);
+                const service = serviceRegistry.get('news');
+                if (!service) {
+                    user.emit('answer error', "News service is down :/");
+                } else {
+                    client
+                        .message(message, {})
+                        .then(data => user.emit('anwser message', JSON.stringify(data)))
+                        .catch(console.error);
+                }
             });
 
         });

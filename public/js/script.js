@@ -16,14 +16,19 @@ jQuery(document).ready($ => {
         socket.emit('chat message', message);
     };
 
-    const appendToChatDialog = (msg, from, name) => {
+    const appendToChatDialog = (msg, from, name, isError) => {
         $('#dialog').append(`<div class="col-12 ${from}">${name}</div>`);
-        $('#dialog').append(`<div class="col-8 ${from}-border">${msg}</div>`)
+        $('#dialog').append(`<div class="col-8 ${from}-border ${isError ? `alert-danger` : ''}">${msg}</div>`)
     };
 
     socket.on('anwser message', message => {
         console.log(message);
         appendToChatDialog(message, 'bot', botName);
+    });
+
+    socket.on('answer error', message => {
+        console.log(message);
+        appendToChatDialog(message, 'bot', botName, true);
     });
 
 });
