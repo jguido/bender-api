@@ -1,0 +1,4 @@
+.bot {float: left;text-align: left;font-weight: bold;}
+.bot-border {float: left;margin: 10px;padding:10px;border: 1px solid blue;border-radius: 10px;}
+.human {float: right;text-align: right;: bold;}
+.human-border {float: right;margin: 10px;padding:10px;border: 1px solid red;border-radius: 10px;}
