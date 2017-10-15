@@ -2,3 +2,9 @@
 .bot-border {float: left;margin: 10px;padding:10px;border: 1px solid blue;border-radius: 10px;}
 .human {float: right;text-align: right;: bold;}
 .human-border {float: right;margin: 10px;padding:10px;border: 1px solid red;border-radius: 10px;}
+
+#dialog {
+    max-height: 450px;
+    overflow-y: auto;
+    margin-bottom: 20px;
+}

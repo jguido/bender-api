@@ -10,6 +10,10 @@ const io = require('socket.io')(server);
 const indexRoutes = require('./routes/index');
 const config = require('./src/config');
 
+
+const ServiceRegistry = require('./src/ServiceRegistry');
+const serviceRegistry = new ServiceRegistry.ServiceRegistry();
+
 app.use(express.static(path.join(__dirname, 'public')));
 app.use(express.static(path.join(__dirname, 'views')));
 
@@ -18,25 +22,21 @@ app.use(bodyParser.json());
 app.use(bodyParser.urlencoded({ extended: false }));
 
 app.use('/', indexRoutes);
+app.set('_serviceRegistry', serviceRegistry);
 
 server.listen(config.http.port, () => {
     console.log(`Server is up at http://0.0.0.0:${config.http.port}`);
-    require('./src/socket/news/It').run(io, config.ai.token, serviceRegistry);
+    require('./src/socket/Proxy')(io, serviceRegistry);
 });
 
-const ServiceRegistry = require('./src/ServiceRegistry');
-const serviceRegistry = new ServiceRegistry();
-
-app.set('_serviceRegistry', serviceRegistry);
 
 app.put('/register/service/:intent/:port', function(req, res,next) {
     const serviceIntent = req.params.intent;
     const servicePort = req.params.port;
+    const serviceLinkedKeys = req.body.linked;
+    const serviceIp = req.ip.replace('::ffff:', '');
 
-    const serviceIp = req.connection.remoteAddress.includes('::')
-        ? `[${req.connection.remoteAddress}]` : req.connection.remoteAddress;
-
-    serviceRegistry.add(serviceIntent, serviceIp, servicePort);
+    serviceRegistry.add(serviceIntent, serviceIp, servicePort, serviceLinkedKeys);
     res.json({result: `${serviceIntent} at ${serviceIp}:${servicePort}`});
 });
 

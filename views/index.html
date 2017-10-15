@@ -19,18 +19,13 @@
         <div class="col-6">
             <div class="card">
                 <div class="card-body">
-                    <label for="message" class="col-12">
-                        <p>Say something :)</p>
-                        <input type="text" id="message" class="form-control"/>
-                    </label>
-                    <button class="btn" id="sender">Talk</button>
-                </div>
-            </div>
-        </div>
-        <div class="col-6">
-            <div class="card">
-                <div class="card-body">
                     <div id="dialog"></div>
+                    <form id="dialogForm">
+                        <label for="message" class="col-12">
+                            <input type="text" id="message" class="form-control"/>
+                        </label>
+                        <button type="submit" class="btn" id="sender">Talk</button>
+                    </form>
                 </div>
             </div>
         </div>

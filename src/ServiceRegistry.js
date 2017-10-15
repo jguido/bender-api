@@ -5,7 +5,11 @@ class ServiceRegistry {
         this._timeout = 30;
     }
 
-    add(intent, ip, port) {
+    allKeys() {
+        return Object.keys(this._services);
+    }
+
+    add(intent, ip, port, linkedKeys) {
         const key = intent+ip+port;
 
         if(!this._services[key]) {
@@ -13,7 +17,9 @@ class ServiceRegistry {
             this._services[key].timestamp = Math.floor(new Date() / 1000);
             this._services[key].ip = ip;
             this._services[key].port = port;
+            this._services[key].uri = `http://${ip}:${port}/service`;
             this._services[key].intent = intent;
+            this._services[key].linked = linkedKeys;
 
             console.log(`Added service for intent ${intent} on ${ip}:${port}`);
             this._cleanup();
@@ -31,6 +37,7 @@ class ServiceRegistry {
     }
 
     get(intent) {
+        console.log('searching service for intent : '+intent);
         this._cleanup();
         for(let key in this._services) {
             if(this._services[key].intent == intent) return this._services[key];
@@ -52,4 +59,9 @@ class ServiceRegistry {
 
 }
 
-module.exports = ServiceRegistry;
+module.exports = {
+    ServiceRegistry,
+    services: {
+        NEWS: 'news'
+    }
+};
