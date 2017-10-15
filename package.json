@@ -11,8 +11,11 @@
     "cookie-parser": "~1.4.3",
     "express": "~4.15.2",
     "http": "0.0.0",
+    "immutable": "^3.8.2",
     "node-wit": "^4.3.0",
     "path": "^0.12.7",
+    "request": "^2.83.0",
+    "request-promise": "^4.2.2",
     "socket.io": "^2.0.3"
   },
   "devDependencies": {
